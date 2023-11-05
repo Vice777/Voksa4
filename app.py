@@ -2,6 +2,7 @@ import streamlit as st
 from dotenv import load_dotenv
 import os 
 import openai
+import base64
 # from diffusers import StableDiffusionPipeline
 # import torch
 
@@ -12,6 +13,70 @@ from clarifai.client.model import Model
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 os.environ['CLARIFAI_PAT'] = os.getenv("CLARIFAI_PAT")
+
+# Function to set page background image
+def get_base64_of_bin_file(bin_file):
+    """
+    This function reads a binary file and converts its content into a base64 encoded string.
+
+    Arguments:
+    bin_file: A string representing the path to the binary file to be read.
+
+    Returns:
+    A string representing the base64 encoded content of the binary file.
+
+    Raises:
+    FileNotFoundError: If the specified binary file does not exist.
+    """
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+def set_page_background(png_file):
+    """
+    Description:
+    Sets the background of a page using a PNG file.
+
+    Arguments:
+    png_file (str): Path to the PNG file that will be used as the background image.
+
+    Returns:
+    None
+
+    Raises:
+    No exceptions are raised by this function.
+    """
+    bin_str = get_base64_of_bin_file(png_file)
+    page_bg_img = f'''
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{bin_str}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+        }}
+        </style>
+    '''
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# STREAMLIT APP
+st.set_page_config(
+    page_title="insAIghts INTELLIGENCE",
+    page_icon="assets/logo-color.png",
+    layout="wide"
+)
+
+# Hide Streamlit's default menu and footer
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# Set page background
+set_page_background("assets/Volkswagen_logo_2019.svg")
 
 #function to generate AI based images using OpenAI Dall-E
 def generate_images_using_openai(text):
