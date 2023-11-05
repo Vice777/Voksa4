@@ -61,8 +61,8 @@ def set_page_background(png_file):
 
 # STREAMLIT APP
 st.set_page_config(
-    page_title="insAIghts INTELLIGENCE",
-    page_icon="assets/logo-color.png",
+    page_title="Voksa",
+    page_icon="assets/logo.png",
     layout="wide"
 )
 
@@ -76,7 +76,7 @@ footer {visibility: hidden;}
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Set page background
-set_page_background("assets/Volkswagen_logo_2019.svg")
+set_page_background("assets/volkswagen-logo.webp")
 
 #function to generate AI based images using OpenAI Dall-E
 def generate_images_using_openai(text):
